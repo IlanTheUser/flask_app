@@ -1,4 +1,5 @@
-
+clone from repo
+git clone https://github.com/IlanTheUser/flask_app.git
 
 steps:
 
