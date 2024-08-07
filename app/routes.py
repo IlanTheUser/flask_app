@@ -9,21 +9,23 @@ def index():
 @app.route('/register', methods=['POST'])
 def register():
     if request.method == 'POST':
-        # Extract form data
         full_name = request.form['full_name']
         age = request.form['age']
         skill_level = request.form['skill_level']
         country = request.form['country']
         motorcycle = request.form['motorcycle']
 
-        # Attempt to save rider data
         success = save_user(full_name, age, skill_level, country, motorcycle)
         if success:
             flash('Registration successful for Yehuda Rally 2024', 'success')
-            return render_template('success.html')
+            return redirect(url_for('success'))
         else:
             flash('Registration failed. Please try again.', 'error')
             return redirect(url_for('index'))
+
+@app.route('/success')
+def success():
+    return render_template('success.html')
 
 @app.route('/members')
 def members():

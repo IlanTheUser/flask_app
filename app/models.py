@@ -1,99 +1,61 @@
-import mysql.connector
+from flask import render_template, request, redirect, url_for, flash
 from app import app
+from app.models import save_user, get_all_users, get_user, update_user, delete_user
 
-def get_db_connection():
-    """Establish a database connection using configuration parameters"""
-    return mysql.connector.connect(
-        host=app.config['DB_HOST'],
-        user=app.config['DB_USER'],
-        password=app.config['DB_PASSWORD'],
-        database=app.config['DB_NAME']
-    )
+@app.route('/')
+def index():
+    return render_template('index.html')
 
-def save_user(full_name, age, skill_level, country, motorcycle):
-    """Save rider information to the database"""
-    try:
-        conn = get_db_connection()
-        cursor = conn.cursor()
+@app.route('/register', methods=['POST'])
+def register():
+    if request.method == 'POST':
+        full_name = request.form['full_name']
+        age = request.form['age']
+        skill_level = request.form['skill_level']
+        country = request.form['country']
+        motorcycle = request.form['motorcycle']
 
-        # Updated query to include new fields
-        query = "INSERT INTO riders (full_name, age, skill_level, country, motorcycle) VALUES (%s, %s, %s, %s, %s)"
-        values = (full_name, age, skill_level, country, motorcycle)
+        success = save_user(full_name, age, skill_level, country, motorcycle)
+        if success:
+            flash('Registration successful for Yehuda Rally 2024', 'success')
+            return redirect(url_for('success'))
+        else:
+            flash('Registration failed. Please try again.', 'error')
+            return redirect(url_for('index'))
 
-        cursor.execute(query, values)
-        conn.commit()
-        return True
-    except mysql.connector.Error as err:
-        print(f"Database error: {err}")
-        return False
-    finally:
-        if conn.is_connected():
-            cursor.close()
-            conn.close()
+@app.route('/success')
+def success():
+    return render_template('success.html')
 
-def get_all_users():
-    """Retrieve all registered riders from the database"""
-    try:
-        conn = get_db_connection()
-        cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM riders")  # Updated table name to 'riders'
-        riders = cursor.fetchall()
-        return riders
-    except mysql.connector.Error as err:
-        print(f"Database error: {err}")
-        return []
-    finally:
-        if conn.is_connected():
-            cursor.close()
-            conn.close()
+@app.route('/members')
+def members():
+    riders = get_all_users()
+    return render_template('members.html', riders=riders)
 
-def get_user(user_id):
-    """Retrieve a single rider by ID"""
-    try:
-        conn = get_db_connection()
-        cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM riders WHERE id = %s", (user_id,))  # Updated table name to 'riders'
-        rider = cursor.fetchone()
-        return rider
-    except mysql.connector.Error as err:
-        print(f"Database error: {err}")
-        return None
-    finally:
-        if conn.is_connected():
-            cursor.close()
-            conn.close()
+@app.route('/edit/<int:user_id>', methods=['GET', 'POST'])
+def edit_member(user_id):
+    rider = get_user(user_id)
+    if rider is None:
+        flash('Rider not found', 'error')
+        return redirect(url_for('members'))
+    
+    if request.method == 'POST':
+        full_name = request.form['full_name']
+        age = request.form['age']
+        skill_level = request.form['skill_level']
+        country = request.form['country']
+        motorcycle = request.form['motorcycle']
+        if update_user(user_id, full_name, age, skill_level, country, motorcycle):
+            flash('Rider information updated successfully', 'success')
+            return redirect(url_for('members'))
+        else:
+            flash('Failed to update rider information', 'error')
+    return render_template('edit_member.html', rider=rider)
 
-def update_user(user_id, full_name, age, skill_level, country, motorcycle):
-    """Update rider information in the database"""
-    try:
-        conn = get_db_connection()
-        cursor = conn.cursor()
-        # Updated query to include new fields
-        query = "UPDATE riders SET full_name = %s, age = %s, skill_level = %s, country = %s, motorcycle = %s WHERE id = %s"
-        values = (full_name, age, skill_level, country, motorcycle, user_id)
-        cursor.execute(query, values)
-        conn.commit()
-        return True
-    except mysql.connector.Error as err:
-        print(f"Database error: {err}")
-        return False
-    finally:
-        if conn.is_connected():
-            cursor.close()
-            conn.close()
-
-def delete_user(user_id):
-    """Delete a rider from the database"""
-    try:
-        conn = get_db_connection()
-        cursor = conn.cursor()
-        cursor.execute("DELETE FROM riders WHERE id = %s", (user_id,))  # Updated table name to 'riders'
-        conn.commit()
-        return True
-    except mysql.connector.Error as err:
-        print(f"Database error: {err}")
-        return False
-    finally:
-        if conn.is_connected():
-            cursor.close()
-            conn.close()
+@app.route('/delete/<int:user_id>')
+def delete_member(user_id):
+    if delete_user(user_id):
+        flash('Rider removed from registration successfully', 'success')
+    else:
+        flash('Failed to remove rider from registration', 'error')
+    return redirect(url_for('members'))
