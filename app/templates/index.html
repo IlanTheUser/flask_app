@@ -3,21 +3,12 @@
 
 <style>
     body {
-        background-color: #1a1a1a; /* Fallback color */
-        color: #ffffff;
-    }
-    .bg-image {
-        background-image: url('../static/images/background.jpg');
+        background-image: url("{{ url_for('static', filename='images/background.jpg') }}");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
         background-attachment: fixed;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
+        color: #ffffff;
     }
     .container {
         background-color: rgba(0, 0, 0, 0.7);
@@ -51,8 +42,6 @@
         border-color: #5a5a5a;
     }
 </style>
-
-<div class="bg-image"></div>
 
 <div class="container">
     <h1 class="text-center mb-4">Yehuda Rally 2024 - Enduro Race Registration</h1>
