@@ -1,0 +1,36 @@
+/* 
+File: app/static/css/style.css
+
+1. Create a new folder named 'css' inside your 'app/static' directory if it doesn't exist.
+2. Inside this 'css' folder, create a new file named 'style.css'.
+3. Add the following CSS code to this file:
+*/
+
+body {
+    background-image: url('../images/background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-color: #f0f0f0; /* Fallback color */
+}
+
+.container {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+/*
+Explanation of CSS properties:
+
+- background-image: Sets the JPG as the background image.
+- background-size: cover: Scales the image to cover the entire body.
+- background-position: center: Centers the image.
+- background-repeat: no-repeat: Prevents the image from repeating.
+- background-attachment: fixed: Keeps the background fixed while scrolling.
+- background-color: Provides a fallback color if the image fails to load.
+
+The .container class adds a semi-transparent white background to your content areas for better readability.
+*/
