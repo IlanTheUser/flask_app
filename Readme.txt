@@ -30,6 +30,7 @@ CREATE TABLE users (
 EXIT;
 
 
+
 USE userregistration;
 
 CREATE TABLE riders (
@@ -40,12 +41,4 @@ CREATE TABLE riders (
   country VARCHAR(100) NOT NULL,
   motorcycle ENUM('KTM', 'Honda', 'Husqvarna', 'Gas-Gas', 'Yamaha') NOT NULL
 );
-DROP TABLE users;
 EXIT;
-
-
-
-
-
-* USE userregistration;
-* SHOW TABLES;

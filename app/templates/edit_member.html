@@ -2,24 +2,45 @@
 {% block content %}
 
 <div class="container">
-    <h1>Edit Member</h1>
-    <form method="POST">
+    <h1>Edit Rider Information - Yehuda Rally 2024</h1>
+    <!-- Updated heading for the new event -->
+
+    <form action="{{ url_for('edit_member', user_id=rider.id) }}" method="post">
         <div class="form-group">
-            <label for="full_name">Full Name:</label>
-            <input type="text" class="form-control" id="full_name" name="full_name" value="{{ user.full_name }}" required>
+            <label for="full_name">Rider's Full Name:</label>
+            <input type="text" class="form-control" id="full_name" name="full_name" value="{{ rider.full_name }}" required>
         </div>
+
         <div class="form-group">
             <label for="age">Age:</label>
-            <input type="number" class="form-control" id="age" name="age" value="{{ user.age }}" required>
+            <input type="number" class="form-control" id="age" name="age" value="{{ rider.age }}" required>
         </div>
+
         <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required>
+            <label for="skill_level">Skill Level:</label>
+            <select class="form-control" id="skill_level" name="skill_level" required>
+                <option value="Novice" {% if rider.skill_level == 'Novice' %}selected{% endif %}>Novice</option>
+                <option value="Intermediate" {% if rider.skill_level == 'Intermediate' %}selected{% endif %}>Intermediate</option>
+                <option value="Expert" {% if rider.skill_level == 'Expert' %}selected{% endif %}>Expert</option>
+            </select>
         </div>
+
         <div class="form-group">
-            <label for="city">City:</label>
-            <input type="text" class="form-control" id="city" name="city" value="{{ user.city }}" required>
+            <label for="country">Country:</label>
+            <input type="text" class="form-control" id="country" name="country" value="{{ rider.country }}" required>
         </div>
+
+        <div class="form-group">
+            <label for="motorcycle">Motorcycle:</label>
+            <select class="form-control" id="motorcycle" name="motorcycle" required>
+                <option value="KTM" {% if rider.motorcycle == 'KTM' %}selected{% endif %}>KTM</option>
+                <option value="Honda" {% if rider.motorcycle == 'Honda' %}selected{% endif %}>Honda</option>
+                <option value="Husqvarna" {% if rider.motorcycle == 'Husqvarna' %}selected{% endif %}>Husqvarna</option>
+                <option value="Gas-Gas" {% if rider.motorcycle == 'Gas-Gas' %}selected{% endif %}>Gas-Gas</option>
+                <option value="Yamaha" {% if rider.motorcycle == 'Yamaha' %}selected{% endif %}>Yamaha</option>
+            </select>
+        </div>
+
         <button type="submit" class="btn btn-primary">Update</button>
         <a href="{{ url_for('members') }}" class="btn btn-secondary">Cancel</a>
     </form>

@@ -10,43 +10,35 @@ def get_db_connection():
         database=app.config['DB_NAME']
     )
 
-def save_user(full_name, age, email, city):
-    """Save user information to the database"""
+def save_user(full_name, age, skill_level, country, motorcycle):
+    """Save rider information to the database"""
     try:
-        # Establish database connection
         conn = get_db_connection()
         cursor = conn.cursor()
 
-        # Prepare SQL query
-        query = "INSERT INTO users (full_name, age, email, city) VALUES (%s, %s, %s, %s)"
-        values = (full_name, age, email, city)
+        # Updated query to include new fields
+        query = "INSERT INTO riders (full_name, age, skill_level, country, motorcycle) VALUES (%s, %s, %s, %s, %s)"
+        values = (full_name, age, skill_level, country, motorcycle)
 
-        # Execute the query
         cursor.execute(query, values)
-
-        # Commit the transaction
         conn.commit()
         return True
     except mysql.connector.Error as err:
-        # Log the error (in a real application, use proper logging)
         print(f"Database error: {err}")
         return False
     finally:
-        # Ensure database connection is closed
         if conn.is_connected():
             cursor.close()
             conn.close()
 
-# In models.py, add these new functions:
-
 def get_all_users():
-    """Retrieve all users from the database"""
+    """Retrieve all registered riders from the database"""
     try:
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM users")
-        users = cursor.fetchall()
-        return users
+        cursor.execute("SELECT * FROM riders")  # Updated table name to 'riders'
+        riders = cursor.fetchall()
+        return riders
     except mysql.connector.Error as err:
         print(f"Database error: {err}")
         return []
@@ -56,13 +48,13 @@ def get_all_users():
             conn.close()
 
 def get_user(user_id):
-    """Retrieve a single user by ID"""
+    """Retrieve a single rider by ID"""
     try:
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM users WHERE id = %s", (user_id,))
-        user = cursor.fetchone()
-        return user
+        cursor.execute("SELECT * FROM riders WHERE id = %s", (user_id,))  # Updated table name to 'riders'
+        rider = cursor.fetchone()
+        return rider
     except mysql.connector.Error as err:
         print(f"Database error: {err}")
         return None
@@ -71,13 +63,14 @@ def get_user(user_id):
             cursor.close()
             conn.close()
 
-def update_user(user_id, full_name, age, email, city):
-    """Update user information in the database"""
+def update_user(user_id, full_name, age, skill_level, country, motorcycle):
+    """Update rider information in the database"""
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
-        query = "UPDATE users SET full_name = %s, age = %s, email = %s, city = %s WHERE id = %s"
-        values = (full_name, age, email, city, user_id)
+        # Updated query to include new fields
+        query = "UPDATE riders SET full_name = %s, age = %s, skill_level = %s, country = %s, motorcycle = %s WHERE id = %s"
+        values = (full_name, age, skill_level, country, motorcycle, user_id)
         cursor.execute(query, values)
         conn.commit()
         return True
@@ -90,11 +83,11 @@ def update_user(user_id, full_name, age, email, city):
             conn.close()
 
 def delete_user(user_id):
-    """Delete a user from the database"""
+    """Delete a rider from the database"""
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
-        cursor.execute("DELETE FROM users WHERE id = %s", (user_id,))
+        cursor.execute("DELETE FROM riders WHERE id = %s", (user_id,))  # Updated table name to 'riders'
         conn.commit()
         return True
     except mysql.connector.Error as err:

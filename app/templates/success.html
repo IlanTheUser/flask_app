@@ -1,9 +1,14 @@
 {% extends "base.html" %}
-
 {% block content %}
+
 <div class="container">
-    <h1>Registration Successful!</h1>
-    <p>Thank you for registering. Your information has been saved.</p>
-    <a href="{{ url_for('index') }}">Return to Registration Page</a>
+    <h1>Registration Successful for Yehuda Rally 2024!</h1>
+    <!-- Updated heading for the new event -->
+
+    <p>Thank you for registering for the Yehuda Rally 2024. Your information has been saved.</p>
+
+    <a href="{{ url_for('index') }}" class="btn btn-primary">Return to Registration Page</a>
+    <a href="{{ url_for('members') }}" class="btn btn-secondary">View All Registered Riders</a>
 </div>
+
 {% endblock %}
