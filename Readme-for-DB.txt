@@ -16,8 +16,8 @@ sudo mysql -u root -p
 then in the prompt:
 
 CREATE DATABASE userregistration;
-CREATE USER 'flaskuser'@'localhost' IDENTIFIED BY 'Aa123456';
-GRANT ALL PRIVILEGES ON userregistration.* TO 'flaskuser'@'localhost';
+CREATE USER 'flaskuser'@'%' IDENTIFIED BY 'Aa123456';
+GRANT ALL PRIVILEGES ON userregistration.* TO 'flaskuser'@'%';
 FLUSH PRIVILEGES;
 USE userregistration;
 CREATE TABLE users (
