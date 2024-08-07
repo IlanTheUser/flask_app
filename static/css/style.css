@@ -11,24 +11,26 @@ body {
     line-height: 1.6;
     margin: 0;
     padding: 0;
-    background-image: url("{{ url_for('static', filename='images/background.jpg') }}");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.container {
-    max-width: 800px;
-    width: 90%;
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 15px;
-    padding: 2rem;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+/* Add this new rule */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-image: url("{{ url_for('static', filename='images/yehuda-rally-background.jpg') }}");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 /*
